@@ -4,6 +4,7 @@ import models.Patient;
 
 import javax.swing.*;
 import java.util.List;
+import com.formdev.flatlaf.FlatLightLaf;
 
 /**
      * Die Hauptklasse für das Programm.
