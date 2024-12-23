@@ -1,9 +1,11 @@
+import com.formdev.flatlaf.FlatLightLaf;
 import database.PatientService;
 import models.Patient;
 
+import javax.swing.*;
 import java.util.List;
 
-    /**
+/**
      * Die Hauptklasse für das Programm.
      */
     public class Main {
@@ -32,6 +34,25 @@ import java.util.List;
                 service.deletePatient(patients.get(0).getId());
             }
         }
+
+        // FlatLaf aktivieren
+        try {
+            FlatLightLaf.setup();
+        } catch (Exception e) {
+            System.err.println("Failed to initialize FlatLaf.");
+            e.printStackTrace();
+        }
+
+        // GUI starten
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Meine Anwendung");
+            GUI gui = new GUI(); // GUI-Objekt erstellen
+            frame.setContentPane(gui.getMainPanel()); // Panel der GUI setzen
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+        });
+    }
     }
 
 }
