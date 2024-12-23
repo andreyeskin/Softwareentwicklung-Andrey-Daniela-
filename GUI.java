@@ -1,14 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class GUI {
     private JPanel mainPanel; // Hauptpanel
     private JTextField nameField;
     private JTextField ageField;
     private JButton saveButton;
-    private JButton cancelButton;
+    private JButton showButton;
+
+    private BiConsumer<String, String> saveAction;
+    private Consumer<Void> showAction;
 
     public GUI() {
         // Panel mit Layout
@@ -20,23 +23,18 @@ public class GUI {
         JLabel ageLabel = new JLabel("Alter:");
         ageField = new JTextField();
         saveButton = new JButton("Speichern");
-        cancelButton = new JButton("Abbrechen");
+        showButton = new JButton("Anzeigen");
 
         // Aktionen für Buttons
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = nameField.getText();
-                String age = ageField.getText();
-                JOptionPane.showMessageDialog(null, "Daten gespeichert:\nName: " + name + "\nAlter: " + age);
+        saveButton.addActionListener(e -> {
+            if (saveAction != null) {
+                saveAction.accept(nameField.getText(), ageField.getText());
             }
         });
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nameField.setText("");
-                ageField.setText("");
+        showButton.addActionListener(e -> {
+            if (showAction != null) {
+                showAction.accept(null);
             }
         });
 
@@ -46,7 +44,16 @@ public class GUI {
         mainPanel.add(ageLabel);
         mainPanel.add(ageField);
         mainPanel.add(saveButton);
-        mainPanel.add(cancelButton);
+        mainPanel.add(showButton);
+    }
+
+    // Setter für Aktionen
+    public void setSaveAction(BiConsumer<String, String> saveAction) {
+        this.saveAction = saveAction;
+    }
+
+    public void setShowAction(Consumer<Void> showAction) {
+        this.showAction = showAction;
     }
 
     // Methode, um das Hauptpanel zu bekommen
