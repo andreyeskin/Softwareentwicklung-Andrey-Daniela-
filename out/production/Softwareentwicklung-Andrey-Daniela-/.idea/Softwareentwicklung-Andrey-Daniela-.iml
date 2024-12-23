@@ -27,5 +27,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="flatlaf-3.5.4-javadoc" level="project" />
+    <orderEntry type="module" module-name="src" />
   </component>
 </module>
