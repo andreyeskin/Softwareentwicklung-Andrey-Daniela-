@@ -1,72 +1,76 @@
-import com.formdev.flatlaf.FlatLightLaf;
+// Main.java
 import database.DatabaseConnection;
+import models.Patient;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.function.Consumer;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Die Klasse Main initialisiert die Anwendung und verbindet GUI und Datenbank.
+ */
 public class Main {
     public static void main(String[] args) {
-        // FlatLaf aktivieren
         try {
+            // FlatLaf Theme-Einstellungen
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (Exception e) {
-            System.err.println("Failed to initialize FlatLaf.");
             e.printStackTrace();
         }
 
-        // Anwendung starten
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Patientenverwaltung");
-            GUI gui = new GUI(); // GUI erstellen
+            DatabaseConnection dao = new DatabaseConnection();
+            GUI gui = new GUI();
 
-            // Aktion für das Speichern von Patienten
-            gui.setSaveAction((name, age) -> {
-                try (Connection connection = DatabaseConnection.connect()) {
-                    String sql = "INSERT INTO patients (name, alter, adresse) VALUES (?, ?, ?)";
-                    PreparedStatement stmt = connection.prepareStatement(sql);
-                    stmt.setString(1, name);
-                    stmt.setInt(2, Integer.parseInt(age));
-                    stmt.setString(3, "Unbekannte Adresse");
-                    stmt.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Patient gespeichert!");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Fehler beim Speichern des Patienten.");
+            // Aktionen verbinden
+            gui.setSaveAction((data) -> {
+                try {
+                    String vorname = data[0];
+                    String nachname = data[1];
+                    String geschlecht = data[2];
+                    String adresse = data[3];
+                    int alter = Integer.parseInt(data[4]); // Konvertiere Alter zu Integer
+
+                    dao.addPatient(new Patient(0, vorname, nachname, geschlecht, adresse, alter));
+                    JOptionPane.showMessageDialog(frame, "Patient gespeichert!");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(frame, "Ungültiges Alter! Bitte geben Sie eine Zahl ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(frame, "Fehler beim Speichern des Patienten!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
                 }
             });
 
-            // Aktion für das Anzeigen von Patienten
-            gui.setShowAction(new Consumer<Void>() {
-                @Override
-                public void accept(Void unused) {
-                    try (Connection connection = DatabaseConnection.connect()) {
-                        String sql = "SELECT * FROM patients";
-                        Statement stmt = connection.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-                        StringBuilder result = new StringBuilder("Patientenliste:\n");
-                        while (rs.next()) {
-                            result.append("ID: ").append(rs.getInt("id"))
-                                    .append(", Name: ").append(rs.getString("name"))
-                                    .append(", Alter: ").append(rs.getInt("alter"))
-                                    .append(", Adresse: ").append(rs.getString("adresse"))
-                                    .append("\n");
-                        }
-                        JOptionPane.showMessageDialog(null, result.toString());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Fehler beim Abrufen der Patienten.");
+            gui.setRefreshAction(() -> {
+                try {
+                    List<Patient> patients = dao.getAllPatients();
+                    List<Object[]> tableData = new ArrayList<>();
+                    for (Patient patient : patients) {
+                        tableData.add(new Object[]{
+                                patient.getId(), patient.getVorname(), patient.getNachname(),
+                                patient.getGeschlecht(), patient.getAdresse(), patient.getAlter()
+                        });
                     }
+                    gui.updateTable(tableData);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(frame, "Fehler beim Abrufen der Patientendaten!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
                 }
             });
 
+            // Fenster-Einstellungen
             frame.setContentPane(gui.getMainPanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
+            frame.setSize(1000, 700);
+            frame.setMinimumSize(new Dimension(800, 600));
+            frame.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
             frame.setVisible(true);
+
+            // Initiale Aktualisierung
+            gui.refreshAction.run();
         });
     }
 }
