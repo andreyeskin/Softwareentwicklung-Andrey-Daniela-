@@ -1,6 +1,8 @@
 // Clase Patient.java
 package models;
 
+import java.time.LocalDate;
+
 /**
  * Die Klasse Patient repräsentiert einen Patienten mit grundlegenden Attributen.
  */
@@ -20,6 +22,9 @@ public class Patient {
         this.geschlecht = geschlecht;
         this.adresse = adresse;
         this.alter = alter;
+    }
+
+    public Patient(int id, String anrede, String vorname, String nachname, LocalDate geburtsdatum, String svnr, String versicherung, String telefonnummer, String strasse, String plz, String ort, String bundesland) {
     }
 
     // Getter und Setter
@@ -84,5 +89,8 @@ public class Patient {
                 ", adresse='" + adresse + '\'' +
                 ", alter=" + alter +
                 '}';
+    }
+
+    public Object getAnrede() {
     }
 }
