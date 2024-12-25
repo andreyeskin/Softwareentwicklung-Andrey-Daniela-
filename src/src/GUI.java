@@ -1,4 +1,4 @@
-import export.ExportFunction;
+/*import export.ExportFunction;
 import print.PrintFunction;
 
 import javax.swing.*;
@@ -96,6 +96,7 @@ public class GUI {
         JScrollPane tableScroll = new JScrollPane(patientTable);
         tableScroll.setBorder(BorderFactory.createTitledBorder("Patientenliste"));
 
+
         // Aktionen
         saveButton.addActionListener(e -> {
             if (saveAction != null) {
@@ -190,4 +191,4 @@ public class GUI {
     public JPanel getMainPanel() {
         return mainPanel;
     }
-}
+}*/
