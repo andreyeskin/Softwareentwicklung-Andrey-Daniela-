@@ -1,42 +1,55 @@
 package models;
 
-import java.time.LocalDate;
-
-/**
- * Die Klasse Patient repräsentiert einen Patienten mit grundlegenden Attributen.
- */
 public class Patient {
-    private int id;
-    private String anrede;
+    private int id; // Primärschlüssel
+    private String anrede; // Herr, Frau, etc.
     private String vorname;
     private String nachname;
-    private LocalDate geburtsdatum;
-    private String svnr;
-    private String versicherung;
+    private String geburtstag; // Datum im Format YYYY-MM-DD
+    private String svnr; // Sozialversicherungsnummer
+    private String insuranceId; // Versicherungs-ID
     private String telefonnummer;
-    private String strasse;
-    private String plz;
-    private String ort;
-    private String bundesland;
+    private String strasse; // Adresse
+    private String plz; // Postleitzahl
+    private String ort; // Ort
+    private int genderId; // Verweis auf Tabelle 'gender'
+    private int bundeslandId; // Verweis auf Tabelle 'bundesland'
 
-    // Konstruktor
-    public Patient(int id, String anrede, String vorname, String nachname, LocalDate geburtsdatum, String svnr,
-                   String versicherung, String telefonnummer, String strasse, String plz, String ort, String bundesland) {
+    // Konstruktoren
+    public Patient() {
+        // Standard-Konstruktor
+    }
+
+    public Patient(int id, String anrede, String vorname, String nachname, String geburtstag, String svnr,
+                   String insuranceId, String telefonnummer, String strasse, String plz, String ort, int genderId, int bundeslandId) {
         this.id = id;
         this.anrede = anrede;
         this.vorname = vorname;
         this.nachname = nachname;
-        this.geburtsdatum = geburtsdatum;
+        this.geburtstag = geburtstag;
         this.svnr = svnr;
-        this.versicherung = versicherung;
+        this.insuranceId = insuranceId;
         this.telefonnummer = telefonnummer;
         this.strasse = strasse;
         this.plz = plz;
         this.ort = ort;
-        this.bundesland = bundesland;
+        this.genderId = genderId;
+        this.bundeslandId = bundeslandId;
     }
 
-    // Getter und Setter
+    public Patient(int id, String vorname, String nachname) {
+        this.id = id;
+        this.vorname = vorname;
+        this.nachname = nachname;
+
+
+    }
+
+    public Patient(int patientID, String name) {
+    }
+
+
+    // Getter- und Setter-Methoden
     public int getId() {
         return id;
     }
@@ -69,12 +82,12 @@ public class Patient {
         this.nachname = nachname;
     }
 
-    public LocalDate getGeburtsdatum() {
-        return geburtsdatum;
+    public String getGeburtstag() {
+        return geburtstag;
     }
 
-    public void setGeburtsdatum(LocalDate geburtsdatum) {
-        this.geburtsdatum = geburtsdatum;
+    public void setGeburtstag(String geburtstag) {
+        this.geburtstag = geburtstag;
     }
 
     public String getSvnr() {
@@ -85,12 +98,12 @@ public class Patient {
         this.svnr = svnr;
     }
 
-    public String getVersicherung() {
-        return versicherung;
+    public String getInsuranceId() {
+        return insuranceId;
     }
 
-    public void setVersicherung(String versicherung) {
-        this.versicherung = versicherung;
+    public void setInsuranceId(String insuranceId) {
+        this.insuranceId = insuranceId;
     }
 
     public String getTelefonnummer() {
@@ -125,29 +138,31 @@ public class Patient {
         this.ort = ort;
     }
 
-    public String getBundesland() {
-        return bundesland;
+    public int getGenderId() {
+        return genderId;
     }
 
-    public void setBundesland(String bundesland) {
-        this.bundesland = bundesland;
+    public void setGenderId(int genderId) {
+        this.genderId = genderId;
     }
+
+    public int getBundeslandId() {
+        return bundeslandId;
+    }
+
+    public void setBundeslandId(int bundeslandId) {
+        this.bundeslandId = bundeslandId;
+    }
+
+    // toString-Methode
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", anrede='" + anrede + '\'' +
-                ", vorname='" + vorname + '\'' +
-                ", nachname='" + nachname + '\'' +
-                ", geburtsdatum=" + geburtsdatum +
-                ", svnr='" + svnr + '\'' +
-                ", versicherung='" + versicherung + '\'' +
-                ", telefonnummer='" + telefonnummer + '\'' +
-                ", strasse='" + strasse + '\'' +
-                ", plz='" + plz + '\'' +
-                ", ort='" + ort + '\'' +
-                ", bundesland='" + bundesland + '\'' +
-                '}';
+        return vorname + " " + nachname + " (ID: " + id + ")";
+    }
+
+
+    public int getPatientId() {
+        return id;
     }
 }
