@@ -25,119 +25,200 @@ public class RezeptePanel extends JPanel {
 
     private RezeptDAO rezeptDAO;
 
+    private ImageIcon scaleIcon(ImageIcon icon, int width, int height) {
+        Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
+
+
+
+
     public RezeptePanel() throws SQLException {
         rezeptDAO = new RezeptDAO();
         setLayout(new BorderLayout());
 
-        // Таблица рецептов
+        // Initialisierung der Komponenten
+        patientComboBox = new JComboBox<>();
+        medikamentComboBox = new JComboBox<>();
+        dosierungField = new JTextField();
+        startDatumField = new JTextField();
+        endDatumField = new JTextField();
+        bemerkungField = new JTextField();
+
+        // Festlegen einer festen Größe für Textfelder und JComboBox.
+        Dimension fieldSize = new Dimension(200, 25);
+        patientComboBox.setPreferredSize(fieldSize);
+        medikamentComboBox.setPreferredSize(fieldSize);
+        dosierungField.setPreferredSize(fieldSize);
+        startDatumField.setPreferredSize(fieldSize);
+        endDatumField.setPreferredSize(fieldSize);
+        bemerkungField.setPreferredSize(fieldSize);
+
+
+
+        // Rezepttabelle
         tableModel = new DefaultTableModel(new String[]{"RezeptID", "Patient", "Medikament", "Dosierung", "Startdatum", "Enddatum", "Bemerkung"}, 0);
         rezepteTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(rezepteTable);
         add(scrollPane, BorderLayout.CENTER);
 
 
+
+
+
+
+
         rezepteTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) { // Убедимся, что событие завершено
-                fillFormFromTable(); // Метод для заполнения формуляра
+            if (!e.getValueIsAdjusting()) { // Stellen wir sicher, dass das Ereignis abgeschlossen ist.
+                fillFormFromTable(); // Methode zum Ausfüllen des Formulars
             }
         });
 
 
-        // Формуляр для добавления/редактирования
+
+
+// Formular mit zwei Spalten
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Поля ввода
-        gbc.gridx = 0;
+// Die erste Spalte
+        gbc.gridx = 0; // Столбец 0
         gbc.gridy = 0;
+
         formPanel.add(new JLabel("Patient:"), gbc);
 
-        gbc.gridx = 1;
-        patientComboBox = new JComboBox<>();
-        formPanel.add(patientComboBox, gbc);
-
-        gbc.gridx = 0;
         gbc.gridy = 1;
-        formPanel.add(new JLabel("Medikament:"), gbc);
-
-        gbc.gridx = 1;
-        medikamentComboBox = new JComboBox<>();
-        formPanel.add(medikamentComboBox, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
         formPanel.add(new JLabel("Dosierung:"), gbc);
 
-        gbc.gridx = 1;
-        dosierungField = new JTextField();
-        formPanel.add(dosierungField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        formPanel.add(new JLabel("Startdatum (YYYY-MM-DD):"), gbc);
-
-        gbc.gridx = 1;
-        startDatumField = new JTextField();
-        formPanel.add(startDatumField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 2;
         formPanel.add(new JLabel("Enddatum (YYYY-MM-DD):"), gbc);
 
+// Felder für die erste Spalte
         gbc.gridx = 1;
-        endDatumField = new JTextField();
+        gbc.gridy = 0;
+        formPanel.add(patientComboBox, gbc);
+
+        gbc.gridy = 1;
+        formPanel.add(dosierungField, gbc);
+
+        gbc.gridy = 2;
         formPanel.add(endDatumField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 5;
+// Die zweite Spalte
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Medikament:"), gbc);
+
+        gbc.gridy = 1;
+        formPanel.add(new JLabel("Startdatum (YYYY-MM-DD):"), gbc);
+
+        gbc.gridy = 2;
         formPanel.add(new JLabel("Bemerkung:"), gbc);
 
-        gbc.gridx = 1;
-        bemerkungField = new JTextField();
+
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        formPanel.add(medikamentComboBox, gbc);
+
+        gbc.gridy = 1;
+        formPanel.add(startDatumField, gbc);
+
+        gbc.gridy = 2;
         formPanel.add(bemerkungField, gbc);
 
-        // Кнопки
+// Hinzufügen von Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JButton addButton = new JButton("Hinzufügen");
-        JButton editButton = new JButton("Bearbeiten");
-        JButton deleteButton = new JButton("Löschen");
+        // Laden von Icons
+        ImageIcon addIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-add-48.png")), 24, 24);
+        ImageIcon editIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-edit-40.png")), 24, 24);
+        ImageIcon deleteIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-delete-48.png")), 24, 24);
+
+        JButton addButton = new JButton("Hinzufügen", addIcon);
+        JButton editButton = new JButton("Bearbeiten", editIcon);
+        JButton deleteButton = new JButton("Löschen", deleteIcon);
+        JButton clearButton = new JButton("Formular leeren");
+
+        addButton.setToolTipText("Neues Rezept hinzufügen");
+        editButton.setToolTipText("Ausgewähltes Rezept bearbeiten");
+        deleteButton.setToolTipText("Ausgewähltes Rezept löschen");
+
+        Dimension buttonSize = new Dimension(160, 25);
+        addButton.setPreferredSize(buttonSize);
+        editButton.setPreferredSize(buttonSize);
+        deleteButton.setPreferredSize(buttonSize);
+        clearButton.setPreferredSize(buttonSize);
+
+
+
+
+
+
+
+        // Konfiguration der Buttons
+        addButton.setPreferredSize(buttonSize);
+        addButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        addButton.setVerticalTextPosition(SwingConstants.CENTER);
+        editButton.setPreferredSize(buttonSize);
+        editButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        editButton.setVerticalTextPosition(SwingConstants.CENTER);
+        deleteButton.setPreferredSize(buttonSize);
+        deleteButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        deleteButton.setVerticalTextPosition(SwingConstants.CENTER);
+        clearButton.setPreferredSize(buttonSize);
+        clearButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        clearButton.setVerticalTextPosition(SwingConstants.CENTER);
+
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(clearButton);
 
+// Buttons unter dem Formular
         gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
+        gbc.gridy = 3;
+        gbc.gridwidth = 4;
         formPanel.add(buttonPanel, gbc);
 
+// Fügen wir das Formular zum Hauptfenster hinzu.
         add(formPanel, BorderLayout.SOUTH);
 
-        // События кнопок
+        // Buttonerreignisse
         addButton.addActionListener(e -> addRezept());
         editButton.addActionListener(e -> updateRezept());
 
         deleteButton.addActionListener(e -> deleteRezept());
 
-        // Загрузка данных
+
+        clearButton.addActionListener(e -> {
+            patientComboBox.setSelectedIndex(0);
+            medikamentComboBox.setSelectedIndex(0);
+            dosierungField.setText("");
+            startDatumField.setText("");
+            endDatumField.setText("");
+            bemerkungField.setText("");
+        });
+
+        // Daten laden
         loadRezepteData();
         loadPatientenData();
         loadMedikamenteData();
     }
 
     public void refreshPatientenComboBox(List<Patient> patients) {
-        patientComboBox.removeAllItems(); // Очистить текущий список
+        patientComboBox.removeAllItems(); // Aktuelle Liste löschen
         for (Patient patient : patients) {
-            patientComboBox.addItem(patient); // Добавить обновленный список пациентов
+            patientComboBox.addItem(patient); // Aktualisierte Patientenliste hinzufügen
         }
     }
 
 
     private void loadRezepteData() {
         try {
-            tableModel.setRowCount(0); // Очистка таблицы
+            tableModel.setRowCount(0); // Bereinigung der Tabelle
             List<Rezept> rezepte = rezeptDAO.getAllRezepte();
             for (Rezept rezept : rezepte) {
                 tableModel.addRow(new Object[]{
@@ -179,18 +260,18 @@ public class RezeptePanel extends JPanel {
     }
 
     private void fillFormFromTable() {
-        int selectedRow = rezepteTable.getSelectedRow(); // Получаем индекс выбранной строки
-        System.out.println("Выбрана строка: " + selectedRow); // Отладочный вывод
+        int selectedRow = rezepteTable.getSelectedRow(); // Abrufen des Indexes der ausgewählten Zeile
+        System.out.println("Выбрана строка: " + selectedRow); // Debug-Ausgabe
         if (selectedRow != -1) {
-            // Получаем данные из таблицы
-            String patientName = (String) rezepteTable.getValueAt(selectedRow, 1); // Столбец "Patient"
-            String medikamentName = (String) rezepteTable.getValueAt(selectedRow, 2); // Столбец "Medikament"
-            String dosierung = (String) rezepteTable.getValueAt(selectedRow, 3); // Столбец "Dosierung"
-            String startdatum = (String) rezepteTable.getValueAt(selectedRow, 4); // Столбец "Startdatum"
-            String enddatum = (String) rezepteTable.getValueAt(selectedRow, 5); // Столбец "Enddatum"
-            String bemerkung = (String) rezepteTable.getValueAt(selectedRow, 6); // Столбец "Bemerkung"
+            // Abrufen von Daten aus der Tabelle
+            String patientName = (String) rezepteTable.getValueAt(selectedRow, 1); // "Patient"
+            String medikamentName = (String) rezepteTable.getValueAt(selectedRow, 2); // "Medikament"
+            String dosierung = (String) rezepteTable.getValueAt(selectedRow, 3); //  "Dosierung"
+            String startdatum = (String) rezepteTable.getValueAt(selectedRow, 4); //  "Startdatum"
+            String enddatum = (String) rezepteTable.getValueAt(selectedRow, 5); // "Enddatum"
+            String bemerkung = (String) rezepteTable.getValueAt(selectedRow, 6); //  "Bemerkung"
 
-            System.out.println("Данные из таблицы: ");
+            System.out.println("Daten ");
             System.out.println("Patient: " + patientName);
             System.out.println("Medikament: " + medikamentName);
             System.out.println("Dosierung: " + dosierung);
@@ -198,7 +279,7 @@ public class RezeptePanel extends JPanel {
             System.out.println("Enddatum: " + enddatum);
             System.out.println("Bemerkung: " + bemerkung);
 
-            // Устанавливаем значения в ComboBox для пациента
+            // Setzen der Werte in die ComboBox für den Patienten
             for (int i = 0; i < patientComboBox.getItemCount(); i++) {
                 Patient patient = (Patient) patientComboBox.getItemAt(i);
                 if (patientName.contains(patient.getVorname()) && patientName.contains(patient.getNachname())) {
@@ -207,7 +288,7 @@ public class RezeptePanel extends JPanel {
                 }
             }
 
-            // Устанавливаем значения в ComboBox для медикамента
+            // Setzen der Werte in die ComboBox für den Patienten
             for (int i = 0; i < medikamentComboBox.getItemCount(); i++) {
                 Medikament medikament = (Medikament) medikamentComboBox.getItemAt(i);
                 if (medikament.getName().equals(medikamentName)) {
@@ -216,7 +297,7 @@ public class RezeptePanel extends JPanel {
                 }
             }
 
-            // Устанавливаем значения в текстовые поля
+            // Setzen der Werte in die Textfelder
             dosierungField.setText(dosierung != null ? dosierung : "");
             startDatumField.setText(startdatum != null ? startdatum : "");
             endDatumField.setText(enddatum != null ? enddatum : "");
@@ -251,7 +332,7 @@ public class RezeptePanel extends JPanel {
         }
 
         try {
-            // Получить данные из формуляра
+            // Daten aus dem Formular abrufen
             Patient selectedPatient = (Patient) patientComboBox.getSelectedItem();
             Medikament selectedMedikament = (Medikament) medikamentComboBox.getSelectedItem();
             String dosierung = dosierungField.getText();
@@ -259,32 +340,32 @@ public class RezeptePanel extends JPanel {
             String enddatum = endDatumField.getText();
             String bemerkung = bemerkungField.getText();
 
-            // Получить ID рецепта из таблицы
+            // Abrufen der Rezept-ID aus der Tabelle
             int rezeptId = (int) tableModel.getValueAt(selectedRow, 0);
 
-            // Создать объект Rezept с обновленными данными
+            // Ein Rezept-Objekt mit aktualisierten Daten erstellen
             Rezept rezept = new Rezept(rezeptId, selectedPatient.getPatientId(), selectedMedikament.getMedikamentId(), dosierung, startdatum, enddatum, bemerkung);
 
-            // Обновить рецепт в базе данных
+            // Das Rezept in der Datenbank aktualisieren
             rezeptDAO.updateRezept(rezept);
 
             JOptionPane.showMessageDialog(this, "Rezept wurde erfolgreich aktualisiert!");
-            loadRezepteData(); // Перезагрузить данные
+            loadRezepteData(); // Daten aktualisieren
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Aktualisieren des Rezepts: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
         }
     }
 
 
-        // Реализация удаления рецепта
+        // Das Rezept in der Datenbank aktualisieren
         private void deleteRezept() {
-            int selectedRow = rezepteTable.getSelectedRow(); // Получить выбранную строку
+            int selectedRow = rezepteTable.getSelectedRow(); // Die ausgewählte Zeile abrufen
             if (selectedRow == -1) {
                 JOptionPane.showMessageDialog(this, "Bitte wählen Sie ein Rezept aus, um es zu löschen.", "Fehler", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Получить ID рецепта из таблицы
+            // Die Rezept-ID aus der Tabelle abrufen
             int rezeptId = (int) tableModel.getValueAt(selectedRow, 0);
 
             int confirm = JOptionPane.showConfirmDialog(
@@ -296,9 +377,9 @@ public class RezeptePanel extends JPanel {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    rezeptDAO.deleteRezept(rezeptId); // Удалить рецепт из базы данных
+                    rezeptDAO.deleteRezept(rezeptId); // Das Rezept aus der Datenbank löschen
                     JOptionPane.showMessageDialog(this, "Rezept wurde erfolgreich gelöscht!");
-                    loadRezepteData(); // Обновить данные в таблице
+                    loadRezepteData(); // Die Daten in der Tabelle aktualisieren
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Rezepts: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
                 }

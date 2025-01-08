@@ -25,7 +25,7 @@ public class RezeptDAO {
                 "m.Name AS MedikamentName, " +
                 "r.Dosierung, r.Startdatum, r.Enddatum, r.Bemerkung " +
                 "FROM rezept r " +
-                "JOIN patients p ON r.PatientID = p.id " + // Используем r.PatientID и p.id
+                "JOIN patients p ON r.PatientID = p.id " +
                 "JOIN medikamente m ON r.MedikamentID = m.MedikamentID";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    private JButton exportButton;
+
 
     public MainFrame() throws SQLException {
         setTitle("Krankenhausverwaltung");
@@ -64,10 +64,6 @@ public class MainFrame extends JFrame {
 
 
 
-        exportButton = new JButton("Exportieren");
-
-        // Verbindung zwischen DiagnosenPanel und PatientDiagnosenPanel herstellen
-        diagnosenPanel.setPatientDiagnosenPanel(patientDiagnosenPanel);
 
 
 

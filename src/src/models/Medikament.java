@@ -1,18 +1,18 @@
 package models;
 
 public class Medikament {
-    private int medikamentId; // ID медикамента
-    private String name; // Название медикамента
-    private String beschreibung; // Описание медикамента
+    private int medikamentId; // ID
+    private String name; // Name
+    private String beschreibung; // Beschreibung
 
-    // Конструктор
+    // Konstruktor
     public Medikament(int medikamentId, String name, String beschreibung) {
         this.medikamentId = medikamentId;
         this.name = name;
         this.beschreibung = beschreibung;
     }
 
-    // Геттеры и сеттеры
+    // Getter und Setter
     public int getMedikamentId() {
         return medikamentId;
     }
@@ -37,7 +37,7 @@ public class Medikament {
         this.beschreibung = beschreibung;
     }
 
-    // Переопределение toString для удобного отображения названий медикаментов (например, в ComboBox)
+    // Überschreiben der Methode toString, um die Namen von Medikamenten bequem anzuzeigen (zum Beispiel in einer ComboBox).
     @Override
     public String toString() {
         return name;

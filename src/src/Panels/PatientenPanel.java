@@ -479,7 +479,7 @@ public class PatientenPanel extends JPanel {
             patientDAO.addPatient(patient);
             JOptionPane.showMessageDialog(this, "Patient hinzugefügt!");
             loadPatientenData();
-            // После добавления пациента обновляем список в RezeptePanel
+
             if (rezeptePanel != null) {
                 try {
                     List<Patient> updatedPatients = patientDAO.getAllPatients();
@@ -571,7 +571,7 @@ public class PatientenPanel extends JPanel {
         genderComboBox.setSelectedIndex(0);
         bundeslandComboBox.setSelectedIndex(0);
     }
-    // Метод для установки ссылки на RezeptePanel
+    // Methode zum Setzen der Referenz auf das RezeptePanel
     public void setRezeptePanel(RezeptePanel rezeptePanel) {
         this.rezeptePanel = rezeptePanel;
     }
