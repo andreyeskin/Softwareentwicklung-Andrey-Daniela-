@@ -2,6 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.BiConsumer;
 
+/**
+ * Die Klasse `LoginGUI` stellt ein grafisches Login-Interface bereit.
+ * Benutzer können sich mit ihrem Benutzernamen und Passwort anmelden.
+ * Das Interface unterstützt die Anzeige von Fehler- oder Erfolgsnachrichten.
+ */
 public class LoginGUI {
     private JFrame loginFrame;
     private JTextField usernameField;
@@ -11,6 +16,10 @@ public class LoginGUI {
 
     private BiConsumer<String, String> loginAction;
 
+    /**
+     * Konstruktor für die Erstellung der Login-Oberfläche.
+     * Initialisiert die GUI-Komponenten und legt das Layout fest.
+     */
     public LoginGUI() {
         loginFrame = new JFrame("Login");
         loginFrame.setLayout(new BorderLayout());
@@ -37,7 +46,7 @@ public class LoginGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Username-Feld
+        // Benutzername-Feld
         JLabel usernameLabel = new JLabel("Benutzername:");
         usernameLabel.setForeground(Color.BLACK);
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -93,26 +102,50 @@ public class LoginGUI {
         loginFrame.add(backgroundPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Setzt die Aktion, die beim Klicken auf den Login-Button ausgeführt wird.
+     *
+     * @param action Eine BiConsumer-Aktion, die Benutzername und Passwort verarbeitet.
+     */
     public void setLoginAction(BiConsumer<String, String> action) {
         this.loginAction = action;
     }
 
+    /**
+     * Zeigt eine Nachricht im Login-Fenster an.
+     *
+     * @param message Die anzuzeigende Nachricht.
+     */
     public void showMessage(String message) {
         messageLabel.setText(message);
     }
 
+    /**
+     * Zeigt das Login-Fenster an.
+     */
     public void show() {
         loginFrame.setVisible(true);
     }
 
+    /**
+     * Schließt das Login-Fenster.
+     */
     public void close() {
         loginFrame.dispose();
     }
 
     /**
-     * Hilfsklasse zum effizienten Laden von Bildern
+     * Hilfsklasse zum effizienten Laden und Skalieren von Bildern.
      */
     static class OptimizedImageLoader {
+        /**
+         * Lädt ein Bild von der angegebenen Datei und skaliert es auf die angegebene Breite und Höhe.
+         *
+         * @param path  Der Pfad zur Bilddatei.
+         * @param width Die gewünschte Breite des Bildes.
+         * @param height Die gewünschte Höhe des Bildes.
+         * @return Ein skaliertes `ImageIcon` oder `null`, wenn ein Fehler auftritt.
+         */
         public static ImageIcon loadImage(String path, int width, int height) {
             try {
                 ImageIcon icon = new ImageIcon(path);

@@ -444,10 +444,10 @@ public class PatientenPanel extends JPanel {
 
     // Sortierfunktion aktivieren
     // private void enableTableSorting() {
-      //  DefaultTableModel model = (DefaultTableModel) patientenTable.getModel();
-      //  TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-     //   patientenTable.setRowSorter(sorter);
-   // }
+    //  DefaultTableModel model = (DefaultTableModel) patientenTable.getModel();
+    //  TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    //   patientenTable.setRowSorter(sorter);
+    // }
 
 
     private void addPatient() {

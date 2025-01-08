@@ -7,8 +7,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO (Data Access Object) für die Verwaltung von Patientendiagnosen in der Tabelle "patient_diagnosen".
+ * Diese Klasse bietet CRUD-Methoden sowie Abfragemethoden für detaillierte Diagnoseninformationen.
+ */
 public class PatientDiagnosenDAO {
 
+    /**
+     * Ruft alle Patientendiagnosen aus der Tabelle "patient_diagnosen" ab.
+     *
+     * @return eine Liste von {@link PatientDiagnose}-Objekten.
+     * @throws SQLException wenn ein Fehler bei der Datenbankabfrage auftritt.
+     */
     public List<PatientDiagnose> getAllPatientDiagnosen() throws SQLException {
         List<PatientDiagnose> patientDiagnosenList = new ArrayList<>();
         String sql = """
@@ -18,7 +28,7 @@ public class PatientDiagnosenDAO {
         FROM patient_diagnosen pd
         LEFT JOIN diagnosen d ON pd.DiagnoseID = d.DiagnoseID
         LEFT JOIN patients p ON pd.PatientID = p.id
-    """;
+        """;
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql);
@@ -40,7 +50,12 @@ public class PatientDiagnosenDAO {
         return patientDiagnosenList;
     }
 
-
+    /**
+     * Fügt eine neue Patientendiagnose in die Tabelle "patient_diagnosen" ein.
+     *
+     * @param patientDiagnose das {@link PatientDiagnose}-Objekt, das hinzugefügt werden soll.
+     * @throws SQLException wenn ein Fehler bei der Einfügung auftritt.
+     */
     public void addPatientDiagnose(PatientDiagnose patientDiagnose) throws SQLException {
         String sql = "INSERT INTO patient_diagnosen (PatientID, DiagnoseID, Datum, Bemerkung) VALUES (?, ?, ?, ?)";
 
@@ -54,6 +69,12 @@ public class PatientDiagnosenDAO {
         }
     }
 
+    /**
+     * Aktualisiert eine vorhandene Patientendiagnose in der Tabelle "patient_diagnosen".
+     *
+     * @param patientDiagnose das {@link PatientDiagnose}-Objekt mit den aktualisierten Werten.
+     * @throws SQLException wenn ein Fehler bei der Aktualisierung auftritt.
+     */
     public void updatePatientDiagnose(PatientDiagnose patientDiagnose) throws SQLException {
         String sql = "UPDATE patient_diagnosen SET PatientID = ?, DiagnoseID = ?, Datum = ?, Bemerkung = ? WHERE PatientDiagnoseID = ?";
 
@@ -68,8 +89,12 @@ public class PatientDiagnosenDAO {
         }
     }
 
-
-
+    /**
+     * Löscht eine Patientendiagnose aus der Tabelle "patient_diagnosen".
+     *
+     * @param patientDiagnoseId die ID der Patientendiagnose, die gelöscht werden soll.
+     * @throws SQLException wenn ein Fehler bei der Löschung auftritt.
+     */
     public void deletePatientDiagnose(int patientDiagnoseId) throws SQLException {
         String sql = "DELETE FROM patient_diagnosen WHERE PatientDiagnoseID = ?";
 
@@ -80,6 +105,12 @@ public class PatientDiagnosenDAO {
         }
     }
 
+    /**
+     * Ruft detaillierte Informationen zu allen Patientendiagnosen ab, einschließlich Patientennamen, Diagnosenamen und ICD10-Codes.
+     *
+     * @return eine Liste von Arrays, wobei jedes Array die Informationen einer Patientendiagnose enthält.
+     * @throws SQLException wenn ein Fehler bei der Abfrage auftritt.
+     */
     public List<String[]> getDetailedPatientDiagnosen() throws SQLException {
         List<String[]> result = new ArrayList<>();
         String sql = """
@@ -96,7 +127,7 @@ public class PatientDiagnosenDAO {
             patients p ON pd.PatientID = p.id
         JOIN 
             diagnosen d ON pd.DiagnoseID = d.DiagnoseID;
-    """;
+        """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -116,6 +147,4 @@ public class PatientDiagnosenDAO {
         }
         return result;
     }
-
-
 }

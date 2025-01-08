@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * Die Klasse Patient repräsentiert einen Patienten mit allen relevanten Daten.
+ * Sie enthält Attribute wie Name, Geburtsdatum, Adresse, Geschlecht und weitere Informationen.
+ */
 public class Patient {
     private int id; // Primärschlüssel
     private String anrede; // Herr, Frau, etc.
@@ -15,11 +19,29 @@ public class Patient {
     private int genderId; // Verweis auf Tabelle 'gender'
     private int bundeslandId; // Verweis auf Tabelle 'bundesland'
 
-    // Konstruktoren
+    /**
+     * Standard-Konstruktor.
+     */
     public Patient() {
         // Standard-Konstruktor
     }
 
+    /**
+     * Vollständiger Konstruktor für ein Patient-Objekt.
+     * @param id Die ID des Patienten.
+     * @param anrede Die Anrede des Patienten.
+     * @param vorname Der Vorname des Patienten.
+     * @param nachname Der Nachname des Patienten.
+     * @param geburtstag Das Geburtsdatum des Patienten.
+     * @param svnr Die Sozialversicherungsnummer des Patienten.
+     * @param insuranceId Die Versicherungs-ID des Patienten.
+     * @param telefonnummer Die Telefonnummer des Patienten.
+     * @param strasse Die Adresse des Patienten.
+     * @param plz Die Postleitzahl des Patienten.
+     * @param ort Der Wohnort des Patienten.
+     * @param genderId Die Geschlechts-ID des Patienten.
+     * @param bundeslandId Die Bundesland-ID des Patienten.
+     */
     public Patient(int id, String anrede, String vorname, String nachname, String geburtstag, String svnr,
                    String insuranceId, String telefonnummer, String strasse, String plz, String ort, int genderId, int bundeslandId) {
         this.id = id;
@@ -37,19 +59,30 @@ public class Patient {
         this.bundeslandId = bundeslandId;
     }
 
+    /**
+     * Konstruktor mit minimalen Daten (ID, Vorname, Nachname).
+     * @param id Die ID des Patienten.
+     * @param vorname Der Vorname des Patienten.
+     * @param nachname Der Nachname des Patienten.
+     */
     public Patient(int id, String vorname, String nachname) {
         this.id = id;
         this.vorname = vorname;
         this.nachname = nachname;
-
-
     }
 
+    /**
+     * Konstruktor mit PatientID und Name.
+     * @param patientID Die Patienten-ID.
+     * @param name Der Name des Patienten.
+     */
     public Patient(int patientID, String name) {
+        // Konstruktor-Logik hier hinzufügen, falls erforderlich
     }
 
-
-    // Getter- und Setter-Methoden
+    /**
+     * Getter- und Setter-Methoden für die Patientenattribute.
+     */
     public int getId() {
         return id;
     }
@@ -154,14 +187,19 @@ public class Patient {
         this.bundeslandId = bundeslandId;
     }
 
-    // toString-Methode
-
+    /**
+     * Gibt eine String-Darstellung des Patienten zurück.
+     * @return Der Vorname, Nachname und die ID des Patienten.
+     */
     @Override
     public String toString() {
         return vorname + " " + nachname + " (ID: " + id + ")";
     }
 
-
+    /**
+     * Getter für die Patienten-ID (Alias für getId).
+     * @return Die ID des Patienten.
+     */
     public int getPatientId() {
         return id;
     }

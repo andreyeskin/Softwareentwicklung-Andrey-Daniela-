@@ -9,6 +9,10 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Das Panel DiagnosenPanel ermöglicht die Verwaltung von Diagnosen.
+ * Es bietet Funktionen zum Hinzufügen, Bearbeiten, Löschen und Anzeigen von Diagnosen in einer Tabelle.
+ */
 public class DiagnosenPanel extends JPanel {
     private JTable diagnosenTable;
     private DefaultTableModel tableModel;
@@ -20,10 +24,20 @@ public class DiagnosenPanel extends JPanel {
     private DiagnoseDAO diagnoseDAO;
 
     private PatientDiagnosenPanel patientDiagnosenPanel;
+
+    /**
+     * Verknüpft dieses Panel mit einem PatientDiagnosenPanel, um die Daten direkt zu aktualisieren.
+     *
+     * @param panel Das PatientDiagnosenPanel, das aktualisiert werden soll.
+     */
     public void setPatientDiagnosenPanel(PatientDiagnosenPanel panel) {
         this.patientDiagnosenPanel = panel;
     }
 
+    /**
+     * Konstruktor des DiagnosenPanels.
+     * Initialisiert die GUI-Komponenten, die Tabelle und lädt die Diagnosedaten.
+     */
     public DiagnosenPanel() {
         diagnoseDAO = new DiagnoseDAO();
         setLayout(new BorderLayout());
@@ -34,17 +48,15 @@ public class DiagnosenPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(diagnosenTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Hinzufügen eines ListSelectionListeners zur Tabelle
+        // Listener für die Auswahl in der Tabelle
         diagnosenTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) { // Überprüfen, ob das Ereignis abgeschlossen ist
+            if (!e.getValueIsAdjusting()) {
                 int selectedRow = diagnosenTable.getSelectedRow();
-                if (selectedRow != -1) { // Überprüfen, ob eine Zeile ausgewählt ist
-                    // Werte aus der ausgewählten Zeile abrufen
+                if (selectedRow != -1) {
                     String icd10 = (String) tableModel.getValueAt(selectedRow, 1);
                     String name = (String) tableModel.getValueAt(selectedRow, 2);
                     String beschreibung = (String) tableModel.getValueAt(selectedRow, 3);
 
-                    // Werte in die Felder einfügen
                     icd10Field.setText(icd10);
                     nameField.setText(name);
                     beschreibungField.setText(beschreibung);
@@ -58,60 +70,55 @@ public class DiagnosenPanel extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Label und Textfeld für ICD-10
+        // Label und Eingabefelder hinzufügen
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(new JLabel("ICD-10 Code:"), gbc);
-
         gbc.gridx = 1;
         icd10Field = new JTextField();
         formPanel.add(icd10Field, gbc);
 
-        // Label und Textfeld für Name
         gbc.gridx = 0;
         gbc.gridy = 1;
         formPanel.add(new JLabel("Name:"), gbc);
-
         gbc.gridx = 1;
         nameField = new JTextField();
         formPanel.add(nameField, gbc);
 
-        // Label und Textfeld für Beschreibung
         gbc.gridx = 0;
         gbc.gridy = 2;
         formPanel.add(new JLabel("Beschreibung:"), gbc);
-
         gbc.gridx = 1;
         beschreibungField = new JTextField();
         formPanel.add(beschreibungField, gbc);
 
-        // Buttons
+        // Buttons für Aktionen
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Hinzufügen");
         JButton editButton = new JButton("Bearbeiten");
         JButton deleteButton = new JButton("Löschen");
-
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
 
-        // Buttons ins Layout einfügen
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         formPanel.add(buttonPanel, gbc);
-
         add(formPanel, BorderLayout.SOUTH);
 
-        // Event-Listener
+        // Listener für Buttons
         addButton.addActionListener(e -> addDiagnose());
         editButton.addActionListener(e -> updateDiagnose());
         deleteButton.addActionListener(e -> deleteDiagnose());
 
-        // Diagnosen laden
+        // Diagnosedaten laden
         loadDiagnosenData();
     }
 
+    /**
+     * Lädt die Diagnosedaten aus der Datenbank und zeigt sie in der Tabelle an.
+     */
     private void loadDiagnosenData() {
         try {
             tableModel.setRowCount(0); // Tabelle zurücksetzen
@@ -129,7 +136,10 @@ public class DiagnosenPanel extends JPanel {
         }
     }
 
-
+    /**
+     * Fügt eine neue Diagnose hinzu.
+     * Validiert die Eingabefelder und speichert die Diagnose in der Datenbank.
+     */
     private void addDiagnose() {
         String icd10 = icd10Field.getText();
         String name = nameField.getText();
@@ -142,24 +152,24 @@ public class DiagnosenPanel extends JPanel {
 
         try {
             Diagnose diagnose = new Diagnose(0, icd10, name, beschreibung);
-            diagnoseDAO.addDiagnose(diagnose); // Diagnose zur DB hinzufügen
+            diagnoseDAO.addDiagnose(diagnose);
             JOptionPane.showMessageDialog(this, "Diagnose hinzugefügt!");
 
-            // Aktualisiere die Diagnose-ComboBox im PatientDiagnosenPanel
             if (patientDiagnosenPanel != null) {
-                patientDiagnosenPanel.loadComboBoxData(); // <- ComboBox sofort aktualisieren
+                patientDiagnosenPanel.loadComboBoxData();
             }
 
-            // Diagnosen-Tabelle aktualisieren
             loadDiagnosenData();
-
-            // Eingabefelder leeren
             clearFields();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Hinzufügen: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Aktualisiert die ausgewählte Diagnose.
+     * Validiert die Eingabefelder und speichert die Änderungen in der Datenbank.
+     */
     private void updateDiagnose() {
         int selectedRow = diagnosenTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -188,8 +198,9 @@ public class DiagnosenPanel extends JPanel {
         }
     }
 
-
-
+    /**
+     * Löscht die ausgewählte Diagnose.
+     */
     private void deleteDiagnose() {
         int selectedRow = diagnosenTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -207,8 +218,9 @@ public class DiagnosenPanel extends JPanel {
         }
     }
 
-
-
+    /**
+     * Leert die Eingabefelder.
+     */
     private void clearFields() {
         icd10Field.setText("");
         nameField.setText("");

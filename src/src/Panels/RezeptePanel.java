@@ -357,36 +357,35 @@ public class RezeptePanel extends JPanel {
     }
 
 
-        // Das Rezept in der Datenbank aktualisieren
-        private void deleteRezept() {
-            int selectedRow = rezepteTable.getSelectedRow(); // Die ausgewählte Zeile abrufen
-            if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(this, "Bitte wählen Sie ein Rezept aus, um es zu löschen.", "Fehler", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+    // Das Rezept in der Datenbank aktualisieren
+    private void deleteRezept() {
+        int selectedRow = rezepteTable.getSelectedRow(); // Die ausgewählte Zeile abrufen
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Bitte wählen Sie ein Rezept aus, um es zu löschen.", "Fehler", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            // Die Rezept-ID aus der Tabelle abrufen
-            int rezeptId = (int) tableModel.getValueAt(selectedRow, 0);
+        // Die Rezept-ID aus der Tabelle abrufen
+        int rezeptId = (int) tableModel.getValueAt(selectedRow, 0);
 
-            int confirm = JOptionPane.showConfirmDialog(
-                    this,
-                    "Sind Sie sicher, dass Sie dieses Rezept löschen möchten?",
-                    "Löschen bestätigen",
-                    JOptionPane.YES_NO_OPTION
-            );
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Sind Sie sicher, dass Sie dieses Rezept löschen möchten?",
+                "Löschen bestätigen",
+                JOptionPane.YES_NO_OPTION
+        );
 
-            if (confirm == JOptionPane.YES_OPTION) {
-                try {
-                    rezeptDAO.deleteRezept(rezeptId); // Das Rezept aus der Datenbank löschen
-                    JOptionPane.showMessageDialog(this, "Rezept wurde erfolgreich gelöscht!");
-                    loadRezepteData(); // Die Daten in der Tabelle aktualisieren
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Rezepts: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
-                }
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                rezeptDAO.deleteRezept(rezeptId); // Das Rezept aus der Datenbank löschen
+                JOptionPane.showMessageDialog(this, "Rezept wurde erfolgreich gelöscht!");
+                loadRezepteData(); // Die Daten in der Tabelle aktualisieren
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Rezepts: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
+}
 
 
 

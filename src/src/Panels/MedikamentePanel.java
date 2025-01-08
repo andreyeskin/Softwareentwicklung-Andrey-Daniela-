@@ -9,6 +9,10 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Das Panel MedikamentePanel ermöglicht die Verwaltung von Medikamenten.
+ * Es bietet Funktionen zum Hinzufügen, Bearbeiten, Löschen und Anzeigen von Medikamenten in einer Tabelle.
+ */
 public class MedikamentePanel extends JPanel {
     private JTable medikamenteTable;
     private DefaultTableModel tableModel;
@@ -18,38 +22,42 @@ public class MedikamentePanel extends JPanel {
 
     private MedikamentDAO medikamentDAO;
 
+    /**
+     * Konstruktor für das MedikamentePanel.
+     * Initialisiert die Benutzeroberfläche und lädt die Medikamentendaten aus der Datenbank.
+     *
+     * @throws SQLException wenn ein Fehler bei der Datenbankverbindung auftritt.
+     */
     public MedikamentePanel() throws SQLException {
         medikamentDAO = new MedikamentDAO();
         setLayout(new BorderLayout());
 
-        // Таблица медикаментов
+        // Tabelle für Medikamente
         tableModel = new DefaultTableModel(new String[]{"ID", "Name", "Beschreibung"}, 0);
         medikamenteTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(medikamenteTable);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Listener für die Tabellenauswahl
         medikamenteTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) { // Убедиться, что событие завершено
+            if (!e.getValueIsAdjusting()) {
                 int selectedRow = medikamenteTable.getSelectedRow();
-                if (selectedRow != -1) { // Проверяем, что строка выбрана
-                    // Получаем данные из выбранной строки
-                    String name = (String) tableModel.getValueAt(selectedRow, 1); // Столбец "Name"
-                    String beschreibung = (String) tableModel.getValueAt(selectedRow, 2); // Столбец "Beschreibung"
+                if (selectedRow != -1) {
+                    String name = (String) tableModel.getValueAt(selectedRow, 1);
+                    String beschreibung = (String) tableModel.getValueAt(selectedRow, 2);
 
-                    // Устанавливаем значения в текстовые поля
                     nameField.setText(name);
                     beschreibungField.setText(beschreibung);
                 }
             }
         });
 
-        // Формуляр для добавления/редактирования
+        // Formular für Eingaben
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Поля ввода
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(new JLabel("Name:"), gbc);
@@ -66,7 +74,7 @@ public class MedikamentePanel extends JPanel {
         beschreibungField = new JTextField();
         formPanel.add(beschreibungField, gbc);
 
-        // Кнопки
+        // Buttons für Aktionen
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton addButton = new JButton("Hinzufügen");
         JButton editButton = new JButton("Bearbeiten");
@@ -83,18 +91,21 @@ public class MedikamentePanel extends JPanel {
 
         add(formPanel, BorderLayout.SOUTH);
 
-        // События кнопок
+        // Event-Listener für Buttons
         addButton.addActionListener(e -> addMedikament());
         editButton.addActionListener(e -> updateMedikament());
         deleteButton.addActionListener(e -> deleteMedikament());
 
-        // Загрузка данных из базы
+        // Medikamentendaten laden
         loadMedikamenteData();
     }
 
+    /**
+     * Lädt die Medikamentendaten aus der Datenbank und zeigt sie in der Tabelle an.
+     */
     private void loadMedikamenteData() {
         try {
-            tableModel.setRowCount(0); // Очистка таблицы
+            tableModel.setRowCount(0); // Tabelle zurücksetzen
             List<Medikament> medikamente = medikamentDAO.getAllMedikamente();
             for (Medikament medikament : medikamente) {
                 tableModel.addRow(new Object[]{
@@ -108,6 +119,10 @@ public class MedikamentePanel extends JPanel {
         }
     }
 
+    /**
+     * Fügt ein neues Medikament hinzu.
+     * Validiert die Eingabefelder und speichert das Medikament in der Datenbank.
+     */
     private void addMedikament() {
         String name = nameField.getText();
         String beschreibung = beschreibungField.getText();
@@ -128,6 +143,10 @@ public class MedikamentePanel extends JPanel {
         }
     }
 
+    /**
+     * Aktualisiert ein bestehendes Medikament.
+     * Validiert die Eingabefelder und speichert die Änderungen in der Datenbank.
+     */
     private void updateMedikament() {
         int selectedRow = medikamenteTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -155,6 +174,9 @@ public class MedikamentePanel extends JPanel {
         }
     }
 
+    /**
+     * Löscht ein bestehendes Medikament.
+     */
     private void deleteMedikament() {
         int selectedRow = medikamenteTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -172,10 +194,11 @@ public class MedikamentePanel extends JPanel {
         }
     }
 
+    /**
+     * Leert die Eingabefelder.
+     */
     private void clearFields() {
         nameField.setText("");
         beschreibungField.setText("");
     }
-
-    
 }

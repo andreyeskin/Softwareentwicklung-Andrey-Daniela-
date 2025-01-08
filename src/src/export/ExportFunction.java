@@ -5,14 +5,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Diese Klasse bietet eine Funktion zum Exportieren von Tabellendaten in eine CSV-Datei.
+ */
 public class ExportFunction {
 
     /**
      * Exportiert die Daten der Tabelle in eine CSV-Datei.
      *
-     * @param tableData    Die Daten der Tabelle als Liste von Objekten.
-     * @param columnNames  Die Spaltennamen der Tabelle.
-     * @param parentFrame  Das übergeordnete Fenster für Dialoge.
+     * Die Methode zeigt einen Dateiauswahl-Dialog an, um den Speicherort der CSV-Datei auszuwählen.
+     * Danach werden die Spaltennamen und Daten in die ausgewählte Datei geschrieben.
+     *
+     * @param tableData   Die Daten der Tabelle als Liste von Objektarrays, wobei jede Zeile ein Array darstellt.
+     * @param columnNames Die Spaltennamen der Tabelle als Array von Strings.
+     * @param parentFrame Das übergeordnete Fenster für Dialoge, z. B. ein JFrame.
      */
     public static void exportToCSV(List<Object[]> tableData, String[] columnNames, JFrame parentFrame) {
         // Überprüfen, ob es Daten gibt
