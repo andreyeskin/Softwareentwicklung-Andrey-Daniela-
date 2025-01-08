@@ -24,7 +24,7 @@ public class LoginGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = OptimizedImageLoader.loadImage(
-                        "/Users/andrey.eskin/IdeaProjects/Softwareentwicklung-Andrey-Daniela-/src/src/Lib/Von-Papier-zu-Pixel-E-Health-in-Arztpraxen-1.jpg.png", 400, 300
+                        "/Users/Daniela/IdeaProjects/Softwareentwicklung-Andrey-Daniela-/src/src/Lib/DALL·E 2025-01-08 13.40.06  .png", 400, 300
                 );
                 if (backgroundIcon != null) {
                     g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
