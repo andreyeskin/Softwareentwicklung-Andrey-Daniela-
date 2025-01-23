@@ -96,7 +96,7 @@ public class PatientenPanel extends JPanel {
         });
 
 
-        // Im Konstruktor aufrufen
+        //
         //enableTableSorting();
 
         // In der PatientenPanel-Konstruktor
@@ -442,12 +442,12 @@ public class PatientenPanel extends JPanel {
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
     }
 
-    // Sortierfunktion aktivieren
+    /* Sortierfunktion aktivieren
     // private void enableTableSorting() {
     //  DefaultTableModel model = (DefaultTableModel) patientenTable.getModel();
     //  TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
     //   patientenTable.setRowSorter(sorter);
-    // }
+     }*/
 
 
     private void addPatient() {

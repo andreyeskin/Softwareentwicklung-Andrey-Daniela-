@@ -132,13 +132,13 @@ public class RezeptePanel extends JPanel {
 // Hinzufügen von Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         // Laden von Icons
-        ImageIcon addIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-add-48.png")), 24, 24);
-        ImageIcon editIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-edit-40.png")), 24, 24);
-        ImageIcon deleteIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-delete-48.png")), 24, 24);
+       // ImageIcon addIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-add-48.png")), 24, 24);
+       // ImageIcon editIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-edit-40.png")), 24, 24);
+      //  ImageIcon deleteIcon = scaleIcon(new ImageIcon(getClass().getResource("/Lib/icons8-delete-48.png")), 24, 24);
 
-        JButton addButton = new JButton("Hinzufügen", addIcon);
-        JButton editButton = new JButton("Bearbeiten", editIcon);
-        JButton deleteButton = new JButton("Löschen", deleteIcon);
+        JButton addButton = new JButton("Hinzufügen" /*, addIcon*/);
+        JButton editButton = new JButton("Bearbeiten"/*, editIcon*/);
+        JButton deleteButton = new JButton("Löschen" /*,deleteIcon*/);
         JButton clearButton = new JButton("Formular leeren");
 
         addButton.setToolTipText("Neues Rezept hinzufügen");

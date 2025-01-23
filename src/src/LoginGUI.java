@@ -33,7 +33,7 @@ public class LoginGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = OptimizedImageLoader.loadImage(
-                        "/Users/Daniela/IdeaProjects/Softwareentwicklung-Andrey-Daniela-/src/src/Lib/DALL·E 2025-01-08 13.40.06 2V.png", 450, 500
+                        "src/src/Lib/DALL·E 2025-01-08 13.40.06 2V.png", 450, 500
                 );
                 if (backgroundIcon != null) {
                     g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
