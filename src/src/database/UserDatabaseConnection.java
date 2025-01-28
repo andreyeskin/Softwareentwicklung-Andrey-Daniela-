@@ -10,7 +10,7 @@ import java.util.Optional;
 public class UserDatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/BenutzerDatenbank";
     private static final String USER = "root";
-    private static final String PASSWORD = "password123";
+    private static final String PASSWORD = "daniyfelI123";
 
     /**
      * Stellt eine Verbindung zur BenutzerDatenbank her.

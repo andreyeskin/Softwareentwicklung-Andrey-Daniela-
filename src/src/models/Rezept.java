@@ -226,7 +226,7 @@ public class Rezept {
      *
      * @return die String-Darstellung des Rezepts.
      */
-    @Override
+
     public String toString() {
         return "RezeptID: " + rezeptId +
                 ", Patient: " + patientName +

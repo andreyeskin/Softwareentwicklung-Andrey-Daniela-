@@ -193,7 +193,7 @@ public class PatientDiagnose {
      *
      * @return die String-Darstellung der PatientDiagnose.
      */
-    @Override
+
     public String toString() {
         return "PatientDiagnose{" +
                 "patientDiagnoseId=" + patientDiagnoseId +
