@@ -1,6 +1,6 @@
-CREATE DATABASE patient_db2345;
+CREATE DATABASE patient_db;
 
-USE patient_db2345;
+USE patient_db;
 
 
 CREATE TABLE insurance (
